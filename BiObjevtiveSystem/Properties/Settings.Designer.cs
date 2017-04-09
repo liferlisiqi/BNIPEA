@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Interface.Properties
+namespace BiObjevtiveSystem.Properties
 {
 
 
