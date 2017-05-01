@@ -1,4 +1,5 @@
 ﻿//本系统用于求解双目标非线性的所有非支配解，两个目标均为求min
+//
 
 using System;
 using System.Collections.Generic;
@@ -79,6 +80,27 @@ namespace BiObjevtiveSystem
             }
         }
 
+        /// <summary>对于双目标广义指派问题，用递归生成所有解，然后再找所有pareto解
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void generateData_Click(object sender, EventArgs e)
+        {
+            Model model = TxtHelper.TxtIn(3, 6, 3);
+            BackTrackUnrelated btu = new BackTrackUnrelated(model);
+            DateTime begin = System.DateTime.Now;
+            ArrayList allSchedule = btu.getAllSchedules();
+            DateTime end = System.DateTime.Now;
+            geneDataTextBox.Text = (end - begin).TotalSeconds.ToString();
+            foreach (Schedule i in allSchedule)
+            {
+                Solution solution = new Solution(i.makespan, i.timetotal);
+                allSolution.Add(solution);
+            }
+            MessageBox.Show("ok");
+        }
+
         /// <summary>读数据
         /// 
         /// </summary>
@@ -109,8 +131,8 @@ namespace BiObjevtiveSystem
             for (int j = 0; j < AllData.Rows.Count; j++)
             {
                 Solution solution = new Solution();
-                solution.ob1 = 200- Convert.ToDouble(AllData.Rows[j][0].ToString());
-                solution.ob2 = 1.5-Convert.ToDouble(AllData.Rows[j][1].ToString());
+                solution.ob1 = 200 - Convert.ToDouble(AllData.Rows[j][0].ToString());
+                solution.ob2 = 1.5 - Convert.ToDouble(AllData.Rows[j][1].ToString());
                 allSolution.Add(solution);
             }
             DateTime End_Time = System.DateTime.Now;
@@ -143,7 +165,7 @@ namespace BiObjevtiveSystem
             drawPoints(paretoSet);
             DateTime endTime = System.DateTime.Now;
             textBox2.Text = (endTime - beginTime).TotalSeconds.ToString();
-            Console.WriteLine("1: "+paretoSet.Count);
+            Console.WriteLine("1: " + paretoSet.Count);
         }
 
         /// <summary>先CUT被两个极点支配的解，在使用原始Eplson约束法
@@ -152,7 +174,7 @@ namespace BiObjevtiveSystem
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TwoPoleCUT_Epslon_Click(object sender, EventArgs e)
-        {           
+        {
             DateTime beginTime = System.DateTime.Now;
             ArrayList restSolutionSet = allSolution;
             ArrayList paretoSet = new ArrayList();
@@ -215,7 +237,7 @@ namespace BiObjevtiveSystem
             ArrayList restSolutionSet = allSolution;
 
             Solution ob2MaxPareto = Find.ob2MaxSolution(restSolutionSet);
-            restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb2MaxPareto(restSolutionSet,ob2MaxPareto);
+            restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb2MaxPareto(restSolutionSet, ob2MaxPareto);
             paretoSet.Add(ob2MaxPareto);
 
             while (restSolutionSet.Count != 0)
@@ -292,8 +314,6 @@ namespace BiObjevtiveSystem
             textBox7.Text = (endTime - beginTime).TotalSeconds.ToString();
             Console.WriteLine("6: " + paretoSet.Count);
         }
-        
-
 
     }
 }

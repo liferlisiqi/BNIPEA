@@ -44,11 +44,13 @@
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.generateData = new System.Windows.Forms.Button();
+            this.geneDataTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // ReadData
             // 
-            this.ReadData.Location = new System.Drawing.Point(13, 10);
+            this.ReadData.Location = new System.Drawing.Point(13, 58);
             this.ReadData.Name = "ReadData";
             this.ReadData.Size = new System.Drawing.Size(75, 23);
             this.ReadData.TabIndex = 0;
@@ -58,7 +60,7 @@
             // 
             // Epslon
             // 
-            this.Epslon.Location = new System.Drawing.Point(13, 42);
+            this.Epslon.Location = new System.Drawing.Point(13, 90);
             this.Epslon.Name = "Epslon";
             this.Epslon.Size = new System.Drawing.Size(143, 23);
             this.Epslon.TabIndex = 1;
@@ -68,7 +70,7 @@
             // 
             // TwoPoleCUT_Epslon
             // 
-            this.TwoPoleCUT_Epslon.Location = new System.Drawing.Point(13, 72);
+            this.TwoPoleCUT_Epslon.Location = new System.Drawing.Point(13, 120);
             this.TwoPoleCUT_Epslon.Name = "TwoPoleCUT_Epslon";
             this.TwoPoleCUT_Epslon.Size = new System.Drawing.Size(143, 23);
             this.TwoPoleCUT_Epslon.TabIndex = 2;
@@ -78,7 +80,7 @@
             // 
             // EpslonCUT
             // 
-            this.EpslonCUT.Location = new System.Drawing.Point(13, 102);
+            this.EpslonCUT.Location = new System.Drawing.Point(13, 150);
             this.EpslonCUT.Name = "EpslonCUT";
             this.EpslonCUT.Size = new System.Drawing.Size(143, 23);
             this.EpslonCUT.TabIndex = 3;
@@ -88,7 +90,7 @@
             // 
             // TwoPoleCUT_EplsonCUT
             // 
-            this.TwoPoleCUT_EplsonCUT.Location = new System.Drawing.Point(13, 132);
+            this.TwoPoleCUT_EplsonCUT.Location = new System.Drawing.Point(13, 180);
             this.TwoPoleCUT_EplsonCUT.Name = "TwoPoleCUT_EplsonCUT";
             this.TwoPoleCUT_EplsonCUT.Size = new System.Drawing.Size(143, 23);
             this.TwoPoleCUT_EplsonCUT.TabIndex = 4;
@@ -98,7 +100,7 @@
             // 
             // IdeaPointCUT_EpslonCUT
             // 
-            this.IdeaPointCUT_EpslonCUT.Location = new System.Drawing.Point(13, 162);
+            this.IdeaPointCUT_EpslonCUT.Location = new System.Drawing.Point(13, 210);
             this.IdeaPointCUT_EpslonCUT.Name = "IdeaPointCUT_EpslonCUT";
             this.IdeaPointCUT_EpslonCUT.Size = new System.Drawing.Size(143, 23);
             this.IdeaPointCUT_EpslonCUT.TabIndex = 5;
@@ -108,7 +110,7 @@
             // 
             // TwoCUT_IdeaCUT_EpslonCUT
             // 
-            this.TwoCUT_IdeaCUT_EpslonCUT.Location = new System.Drawing.Point(13, 192);
+            this.TwoCUT_IdeaCUT_EpslonCUT.Location = new System.Drawing.Point(13, 240);
             this.TwoCUT_IdeaCUT_EpslonCUT.Name = "TwoCUT_IdeaCUT_EpslonCUT";
             this.TwoCUT_IdeaCUT_EpslonCUT.Size = new System.Drawing.Size(199, 23);
             this.TwoCUT_IdeaCUT_EpslonCUT.TabIndex = 6;
@@ -118,49 +120,49 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(242, 12);
+            this.textBox1.Location = new System.Drawing.Point(242, 60);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 21);
             this.textBox1.TabIndex = 7;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(241, 43);
+            this.textBox2.Location = new System.Drawing.Point(241, 91);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 21);
             this.textBox2.TabIndex = 8;
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(241, 73);
+            this.textBox3.Location = new System.Drawing.Point(241, 121);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 21);
             this.textBox3.TabIndex = 9;
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(241, 103);
+            this.textBox4.Location = new System.Drawing.Point(241, 151);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 21);
             this.textBox4.TabIndex = 10;
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(241, 133);
+            this.textBox5.Location = new System.Drawing.Point(241, 181);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(100, 21);
             this.textBox5.TabIndex = 11;
             // 
             // textBox6
             // 
-            this.textBox6.Location = new System.Drawing.Point(241, 163);
+            this.textBox6.Location = new System.Drawing.Point(241, 211);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(100, 21);
             this.textBox6.TabIndex = 12;
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(240, 193);
+            this.textBox7.Location = new System.Drawing.Point(240, 241);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(100, 21);
             this.textBox7.TabIndex = 13;
@@ -168,7 +170,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(268, 231);
+            this.label1.Location = new System.Drawing.Point(268, 279);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 14;
@@ -181,11 +183,30 @@
             this.panel1.Size = new System.Drawing.Size(505, 505);
             this.panel1.TabIndex = 15;
             // 
+            // generateData
+            // 
+            this.generateData.Location = new System.Drawing.Point(13, 24);
+            this.generateData.Name = "generateData";
+            this.generateData.Size = new System.Drawing.Size(75, 23);
+            this.generateData.TabIndex = 16;
+            this.generateData.Text = "生成数据";
+            this.generateData.UseVisualStyleBackColor = true;
+            this.generateData.Click += new System.EventHandler(this.generateData_Click);
+            // 
+            // geneDataTextBox
+            // 
+            this.geneDataTextBox.Location = new System.Drawing.Point(242, 24);
+            this.geneDataTextBox.Name = "geneDataTextBox";
+            this.geneDataTextBox.Size = new System.Drawing.Size(100, 21);
+            this.geneDataTextBox.TabIndex = 17;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(987, 563);
+            this.Controls.Add(this.geneDataTextBox);
+            this.Controls.Add(this.generateData);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox7);
@@ -227,6 +248,8 @@
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button generateData;
+        private System.Windows.Forms.TextBox geneDataTextBox;
     }
 }
 
