@@ -90,12 +90,15 @@ namespace BiObjevtiveSystem
             Model model = TxtHelper.TxtIn(3, 6, 3);
             BackTrackUnrelated btu = new BackTrackUnrelated(model);
             DateTime begin = System.DateTime.Now;
-            ArrayList allSchedule = btu.getAllSchedules();
+            //Schedule msMinPareto = btu.getMsPareto();
+            //Schedule ttMinPareto = btu.getTtPareto();
+            //ArrayList ndSchedules = btu.getNDSchedules(ttMinPareto.makespan, msMinPareto.timetotal);
+            ArrayList allSchedules = btu.getAllSchedules();
             DateTime end = System.DateTime.Now;
-            geneDataTextBox.Text = (end - begin).TotalSeconds.ToString();
-            foreach (Schedule i in allSchedule)
+            geneDataTextBox.Text = (end - begin).TotalMilliseconds.ToString();
+            foreach (Schedule i in allSchedules)
             {
-                Solution solution = new Solution(i.makespan, i.timetotal);
+                Solution solution = new Solution(100 - i.makespan, 100 - i.timetotal);
                 allSolution.Add(solution);
             }
             MessageBox.Show("ok");
@@ -136,7 +139,7 @@ namespace BiObjevtiveSystem
                 allSolution.Add(solution);
             }
             DateTime End_Time = System.DateTime.Now;
-            textBox1.Text = (End_Time - Begin_Time).TotalSeconds.ToString();
+            textBox1.Text = (End_Time - Begin_Time).TotalMilliseconds.ToString();
             drawPoints(allSolution);
             //NPOIHelper.outputExcel(allSolution, "D:/源码/多目标精确算法/多目标benchmark/AP/3-10-1-all.xls");
             //ExportExcel(AllData);
@@ -164,7 +167,7 @@ namespace BiObjevtiveSystem
 
             drawPoints(paretoSet);
             DateTime endTime = System.DateTime.Now;
-            textBox2.Text = (endTime - beginTime).TotalSeconds.ToString();
+            textBox2.Text = (endTime - beginTime).TotalMilliseconds.ToString();
             Console.WriteLine("1: " + paretoSet.Count);
         }
 
@@ -196,7 +199,7 @@ namespace BiObjevtiveSystem
             }
 
             DateTime endTime = System.DateTime.Now;
-            textBox3.Text = (endTime - beginTime).TotalSeconds.ToString();
+            textBox3.Text = (endTime - beginTime).TotalMilliseconds.ToString();
             Console.WriteLine("2: " + paretoSet.Count);
         }
 
@@ -220,7 +223,7 @@ namespace BiObjevtiveSystem
             }
 
             DateTime endTime = System.DateTime.Now;
-            textBox4.Text = (endTime - beginTime).TotalSeconds.ToString();
+            textBox4.Text = (endTime - beginTime).TotalMilliseconds.ToString();
             Console.WriteLine("3: " + paretoSet.Count);
         }
 
@@ -248,7 +251,7 @@ namespace BiObjevtiveSystem
             }
 
             DateTime endTime = System.DateTime.Now;
-            textBox5.Text = (endTime - beginTime).TotalSeconds.ToString();
+            textBox5.Text = (endTime - beginTime).TotalMilliseconds.ToString();
             Console.WriteLine("4: " + paretoSet.Count);
         }
 
@@ -275,7 +278,7 @@ namespace BiObjevtiveSystem
             }
             //NPOIHelper(IdeaSet, "D:/源码/多目标精确算法/多目标benchmark/AP/3-10-1.xls");
             DateTime endTime = System.DateTime.Now;
-            textBox6.Text = (endTime - beginTime).TotalSeconds.ToString();
+            textBox6.Text = (endTime - beginTime).TotalMilliseconds.ToString();
             Console.WriteLine("5: " + paretoSet.Count);
         }
 
@@ -311,7 +314,7 @@ namespace BiObjevtiveSystem
             }
             //NPOIHelper(IdeaSet, "D:/源码/多目标精确算法/多目标benchmark/AP/3-10-1.xls");
             DateTime endTime = System.DateTime.Now;
-            textBox7.Text = (endTime - beginTime).TotalSeconds.ToString();
+            textBox7.Text = (endTime - beginTime).TotalMilliseconds.ToString();
             Console.WriteLine("6: " + paretoSet.Count);
         }
 
