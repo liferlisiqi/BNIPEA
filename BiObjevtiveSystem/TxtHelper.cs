@@ -8,6 +8,13 @@ namespace BiObjevtiveSystem
 {
     class TxtHelper
     {
+        /// <summary>读取txt文件，GAP_m-m_n-n_ins-ins.txt
+        /// 
+        /// </summary>
+        /// <param name="m"></param>
+        /// <param name="n"></param>
+        /// <param name="ins"></param>
+        /// <returns></returns>
         public static Model TxtIn(int m, int n, int ins)
         {
             Model Model = new Model();

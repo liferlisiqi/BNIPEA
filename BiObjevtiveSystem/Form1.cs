@@ -25,7 +25,7 @@ namespace BiObjevtiveSystem
             InitializeComponent();
         }
 
-        protected void ExportExcel(System.Data.DataTable dt)
+        private void ExportExcel(System.Data.DataTable dt)
         {
             if (dt == null || dt.Rows.Count == 0) return;
             Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
@@ -62,6 +62,42 @@ namespace BiObjevtiveSystem
             xlApp.Visible = true;
         }
 
+
+        private void ExportExcel(ArrayList arl)
+        {
+            if (arl == null || arl.Count == 0) return;
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+
+            if (xlApp == null)
+            {
+                return;
+            }
+            System.Globalization.CultureInfo CurrentCI = System.Threading.Thread.CurrentThread.CurrentCulture;
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            Microsoft.Office.Interop.Excel.Workbooks workbooks = xlApp.Workbooks;
+            Microsoft.Office.Interop.Excel.Workbook workbook = workbooks.Add(Microsoft.Office.Interop.Excel.XlWBATemplate.xlWBATWorksheet);
+            Microsoft.Office.Interop.Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbook.Worksheets[1];
+            Microsoft.Office.Interop.Excel.Range range;
+            long totalCount = arl.Count;
+            long rowRead = 0;
+            float percent = 0;
+            //for (int i = 0; i < 2; i++)
+            //{
+            //    worksheet.Cells[1, i + 1] = dt.Columns[i].ColumnName;
+            //    range = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[1, i + 1];
+            //    range.Interior.ColorIndex = 15;
+            //    range.Font.Bold = true;
+            //}
+            for (int r = 0; r < arl.Count; r++)
+            {
+                Schedule shcedule = (Schedule)arl[r];
+                worksheet.Cells[r + 1, 1] = shcedule.makespan;
+                worksheet.Cells[r + 1, 2] = shcedule.timetotal;
+                rowRead++;
+                percent = ((float)(100 * rowRead)) / totalCount;
+            }
+            xlApp.Visible = true;
+        }
         private void drawPoints(ArrayList solutionSet)
         {
             Int32 x, y;
@@ -87,18 +123,19 @@ namespace BiObjevtiveSystem
         /// <param name="e"></param>
         private void generateData_Click(object sender, EventArgs e)
         {
-            Model model = TxtHelper.TxtIn(3, 6, 3);
+            Model model = TxtHelper.TxtIn(3, 8, 1);
             BackTrackUnrelated btu = new BackTrackUnrelated(model);
             DateTime begin = System.DateTime.Now;
             //Schedule msMinPareto = btu.getMsPareto();
             //Schedule ttMinPareto = btu.getTtPareto();
             //ArrayList ndSchedules = btu.getNDSchedules(ttMinPareto.makespan, msMinPareto.timetotal);
-            ArrayList allSchedules = btu.getAllSchedules();
+            ArrayList allSchedules = btu.getAllSchedules();          
             DateTime end = System.DateTime.Now;
+            //ExportExcel(allSchedules);
             geneDataTextBox.Text = (end - begin).TotalMilliseconds.ToString();
             foreach (Schedule i in allSchedules)
             {
-                Solution solution = new Solution(100 - i.makespan, 100 - i.timetotal);
+                Solution solution = new Solution(150 - i.makespan, 150 - i.timetotal);
                 allSolution.Add(solution);
             }
             MessageBox.Show("ok");

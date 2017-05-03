@@ -199,7 +199,7 @@ namespace BiObjevtiveSystem
         /// </summary>
         public Schedule getMsPareto()
         {
-            msUpperLimit = 33;
+            msUpperLimit = int.MaxValue;
             ttUpperLimit = 0;
             schedule = new int[numWork];
             msParetoSchedule = new int[numWork];
@@ -214,7 +214,7 @@ namespace BiObjevtiveSystem
         public Schedule getTtPareto()
         {
             msUpperLimit = 0;
-            ttUpperLimit = 80;
+            ttUpperLimit = int.MaxValue;
             schedule = new int[numWork];
             ttParetoSchedule = new int[numWork];
             btSmallerTt(0);
