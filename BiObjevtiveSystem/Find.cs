@@ -105,14 +105,16 @@ namespace BiObjevtiveSystem
         /// 
         /// </summary>
         /// <param name="solutions"></param>
-        /// <param name="pareto"></param>
+        /// <param name="Pareto"></param>
         /// <returns></returns>
-        public static ArrayList ndSolutions(ArrayList solutions, Solution pareto)
+        public static ArrayList ndSolutions(ArrayList solutions, Solution Pareto)
         {
             ArrayList ndSolutions = new ArrayList();
             foreach (Solution i in solutions)
-                if (!pareto.dominate(i) && !pareto.equal(i))
+            {
+                if (!Pareto.dominate(i) && !Pareto.equal(i))
                     ndSolutions.Add(i);
+            }
             return ndSolutions;
         }
     }

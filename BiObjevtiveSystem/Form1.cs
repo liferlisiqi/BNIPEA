@@ -55,15 +55,14 @@ namespace BiObjevtiveSystem
             }
             for (int j = 0; j < AllData.Rows.Count; j++)
             {
-                Solution solution = new Solution();
-                solution.ob1 = 200 - Convert.ToDouble(AllData.Rows[j][0].ToString());
-                solution.ob2 = 1.5 - Convert.ToDouble(AllData.Rows[j][1].ToString());
+                Solution solution = new Solution(
+                    Convert.ToDouble(AllData.Rows[j][0].ToString()), 
+                    Convert.ToDouble(AllData.Rows[j][1].ToString()));
                 allSolutions.Add(solution);
             }
             DateTime End_Time = System.DateTime.Now;
             textBox1.Text = (End_Time - Begin_Time).TotalSeconds.ToString();
             //NPOIHelper.outputExcel(allSolution, "D:/源码/多目标精确算法/多目标benchmark/AP/3-10-1-all.xls");
-            MessageBox.Show("ok");
         }
 
         /// <summary>原始Epslon约束法
@@ -80,7 +79,7 @@ namespace BiObjevtiveSystem
             while (true)
             {
                 min1Pareto = Find.min1Pareto(allSolutions, min1Pareto);
-                if (min1Pareto.ob2 == 0) break;
+                if (min1Pareto.ob2 == 1000) break;
                 ParetoSet.Add(min1Pareto);
             }
 
@@ -98,14 +97,14 @@ namespace BiObjevtiveSystem
         {
             DateTime beginTime = System.DateTime.Now;
             ArrayList ParetoSet = new ArrayList();
-            Solution min1Pareto = new Solution();
+            Solution Pareto = new Solution();
             ArrayList restSolutions = allSolutions;
 
             while (restSolutions.Count != 0)
             {
-                min1Pareto = Find.min1Pareto(restSolutions);
-                restSolutions = Find.ndSolutions(restSolutions, min1Pareto);
-                ParetoSet.Add(min1Pareto);
+                Pareto = Find.min1Pareto(restSolutions);
+                restSolutions = Find.ndSolutions(restSolutions, Pareto);
+                ParetoSet.Add(Pareto);
             }
 
             DateTime endTime = System.DateTime.Now;
@@ -132,11 +131,11 @@ namespace BiObjevtiveSystem
             restSolutions = Find.ndSolutions(restSolutions, min2Pareto);
             ParetoSet.Add(min2Pareto);
 
-            min1Pareto = new Solution();
+            min1Pareto = new Solution(1000, 1000);
             while (true)
             {
                 min1Pareto = Find.min1Pareto(restSolutions, min1Pareto);
-                if (min1Pareto.ob2 == 0) break;
+                if (min1Pareto.ob2 == 1000) break;
                 ParetoSet.Add(min1Pareto);
             }
 
