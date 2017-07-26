@@ -43,16 +43,13 @@
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.generateData = new System.Windows.Forms.Button();
-            this.geneDataTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // ReadData
             // 
-            this.ReadData.Location = new System.Drawing.Point(13, 58);
+            this.ReadData.Location = new System.Drawing.Point(54, 24);
             this.ReadData.Name = "ReadData";
-            this.ReadData.Size = new System.Drawing.Size(75, 23);
+            this.ReadData.Size = new System.Drawing.Size(91, 23);
             this.ReadData.TabIndex = 0;
             this.ReadData.Text = "读数据";
             this.ReadData.UseVisualStyleBackColor = true;
@@ -60,109 +57,109 @@
             // 
             // Epslon
             // 
-            this.Epslon.Location = new System.Drawing.Point(13, 90);
+            this.Epslon.Location = new System.Drawing.Point(54, 63);
             this.Epslon.Name = "Epslon";
-            this.Epslon.Size = new System.Drawing.Size(143, 23);
+            this.Epslon.Size = new System.Drawing.Size(91, 23);
             this.Epslon.TabIndex = 1;
-            this.Epslon.Text = "原始Epslon";
+            this.Epslon.Text = "epslon";
             this.Epslon.UseVisualStyleBackColor = true;
-            this.Epslon.Click += new System.EventHandler(this.Epslon_Click);
-            // 
-            // TwoPoleCUT_Epslon
-            // 
-            this.TwoPoleCUT_Epslon.Location = new System.Drawing.Point(13, 120);
-            this.TwoPoleCUT_Epslon.Name = "TwoPoleCUT_Epslon";
-            this.TwoPoleCUT_Epslon.Size = new System.Drawing.Size(143, 23);
-            this.TwoPoleCUT_Epslon.TabIndex = 2;
-            this.TwoPoleCUT_Epslon.Text = "两极点CUT+原始Epslon";
-            this.TwoPoleCUT_Epslon.UseVisualStyleBackColor = true;
-            this.TwoPoleCUT_Epslon.Click += new System.EventHandler(this.TwoPoleCUT_Epslon_Click);
+            this.Epslon.Click += new System.EventHandler(this.epslon_Click);
             // 
             // EpslonCUT
             // 
-            this.EpslonCUT.Location = new System.Drawing.Point(13, 150);
+            this.EpslonCUT.Location = new System.Drawing.Point(55, 102);
             this.EpslonCUT.Name = "EpslonCUT";
-            this.EpslonCUT.Size = new System.Drawing.Size(143, 23);
+            this.EpslonCUT.Size = new System.Drawing.Size(90, 23);
             this.EpslonCUT.TabIndex = 3;
-            this.EpslonCUT.Text = "EpslonCUT";
+            this.EpslonCUT.Text = "EC";
             this.EpslonCUT.UseVisualStyleBackColor = true;
-            this.EpslonCUT.Click += new System.EventHandler(this.EpslonCUT_Click);
+            this.EpslonCUT.Click += new System.EventHandler(this.EC_Click);
+            // 
+            // TwoPoleCUT_Epslon
+            // 
+            this.TwoPoleCUT_Epslon.Location = new System.Drawing.Point(55, 141);
+            this.TwoPoleCUT_Epslon.Name = "TwoPoleCUT_Epslon";
+            this.TwoPoleCUT_Epslon.Size = new System.Drawing.Size(90, 23);
+            this.TwoPoleCUT_Epslon.TabIndex = 2;
+            this.TwoPoleCUT_Epslon.Text = "PC";
+            this.TwoPoleCUT_Epslon.UseVisualStyleBackColor = true;
+            this.TwoPoleCUT_Epslon.Click += new System.EventHandler(this.PC_Click);
             // 
             // TwoPoleCUT_EplsonCUT
             // 
-            this.TwoPoleCUT_EplsonCUT.Location = new System.Drawing.Point(13, 180);
+            this.TwoPoleCUT_EplsonCUT.Location = new System.Drawing.Point(54, 180);
             this.TwoPoleCUT_EplsonCUT.Name = "TwoPoleCUT_EplsonCUT";
-            this.TwoPoleCUT_EplsonCUT.Size = new System.Drawing.Size(143, 23);
+            this.TwoPoleCUT_EplsonCUT.Size = new System.Drawing.Size(91, 23);
             this.TwoPoleCUT_EplsonCUT.TabIndex = 4;
-            this.TwoPoleCUT_EplsonCUT.Text = "两极点CUT+EpslonCUT";
+            this.TwoPoleCUT_EplsonCUT.Text = "PEC";
             this.TwoPoleCUT_EplsonCUT.UseVisualStyleBackColor = true;
-            this.TwoPoleCUT_EplsonCUT.Click += new System.EventHandler(this.TwoPoleCUT_EplsonCUT_Click);
+            this.TwoPoleCUT_EplsonCUT.Click += new System.EventHandler(this.PEC_Click);
             // 
             // IdeaPointCUT_EpslonCUT
             // 
-            this.IdeaPointCUT_EpslonCUT.Location = new System.Drawing.Point(13, 210);
+            this.IdeaPointCUT_EpslonCUT.Location = new System.Drawing.Point(54, 219);
             this.IdeaPointCUT_EpslonCUT.Name = "IdeaPointCUT_EpslonCUT";
-            this.IdeaPointCUT_EpslonCUT.Size = new System.Drawing.Size(143, 23);
+            this.IdeaPointCUT_EpslonCUT.Size = new System.Drawing.Size(91, 23);
             this.IdeaPointCUT_EpslonCUT.TabIndex = 5;
-            this.IdeaPointCUT_EpslonCUT.Text = "理想点CUT+EpslonCUT";
+            this.IdeaPointCUT_EpslonCUT.Text = "IEC";
             this.IdeaPointCUT_EpslonCUT.UseVisualStyleBackColor = true;
-            this.IdeaPointCUT_EpslonCUT.Click += new System.EventHandler(this.IdeaPointCUT_EpslonCUT_Click);
+            this.IdeaPointCUT_EpslonCUT.Click += new System.EventHandler(this.IEC_Click);
             // 
             // TwoCUT_IdeaCUT_EpslonCUT
             // 
-            this.TwoCUT_IdeaCUT_EpslonCUT.Location = new System.Drawing.Point(13, 240);
+            this.TwoCUT_IdeaCUT_EpslonCUT.Location = new System.Drawing.Point(54, 258);
             this.TwoCUT_IdeaCUT_EpslonCUT.Name = "TwoCUT_IdeaCUT_EpslonCUT";
-            this.TwoCUT_IdeaCUT_EpslonCUT.Size = new System.Drawing.Size(199, 23);
+            this.TwoCUT_IdeaCUT_EpslonCUT.Size = new System.Drawing.Size(91, 23);
             this.TwoCUT_IdeaCUT_EpslonCUT.TabIndex = 6;
-            this.TwoCUT_IdeaCUT_EpslonCUT.Text = "两极点CUT+理想点CUT+EpslonCUT";
+            this.TwoCUT_IdeaCUT_EpslonCUT.Text = "PIEC";
             this.TwoCUT_IdeaCUT_EpslonCUT.UseVisualStyleBackColor = true;
-            this.TwoCUT_IdeaCUT_EpslonCUT.Click += new System.EventHandler(this.TwoCUT_IdeaCUT_EpslonCUT_Click);
+            this.TwoCUT_IdeaCUT_EpslonCUT.Click += new System.EventHandler(this.PIEC_Click);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(242, 60);
+            this.textBox1.Location = new System.Drawing.Point(182, 26);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 21);
             this.textBox1.TabIndex = 7;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(241, 91);
+            this.textBox2.Location = new System.Drawing.Point(181, 65);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 21);
             this.textBox2.TabIndex = 8;
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(241, 121);
+            this.textBox3.Location = new System.Drawing.Point(182, 143);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(100, 21);
             this.textBox3.TabIndex = 9;
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(241, 151);
+            this.textBox4.Location = new System.Drawing.Point(182, 104);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(100, 21);
             this.textBox4.TabIndex = 10;
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(241, 181);
+            this.textBox5.Location = new System.Drawing.Point(181, 182);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(100, 21);
             this.textBox5.TabIndex = 11;
             // 
             // textBox6
             // 
-            this.textBox6.Location = new System.Drawing.Point(241, 211);
+            this.textBox6.Location = new System.Drawing.Point(181, 221);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(100, 21);
             this.textBox6.TabIndex = 12;
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(240, 241);
+            this.textBox7.Location = new System.Drawing.Point(180, 260);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(100, 21);
             this.textBox7.TabIndex = 13;
@@ -170,44 +167,17 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(268, 279);
+            this.label1.Location = new System.Drawing.Point(208, 298);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 12);
+            this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 14;
-            this.label1.Text = "时间/ms";
-            // 
-            // panel1
-            // 
-            this.panel1.Location = new System.Drawing.Point(66, 358);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(196, 126);
-            this.panel1.TabIndex = 15;
-            // 
-            // generateData
-            // 
-            this.generateData.Location = new System.Drawing.Point(13, 24);
-            this.generateData.Name = "generateData";
-            this.generateData.Size = new System.Drawing.Size(75, 23);
-            this.generateData.TabIndex = 16;
-            this.generateData.Text = "生成数据";
-            this.generateData.UseVisualStyleBackColor = true;
-            this.generateData.Click += new System.EventHandler(this.generateData_Click);
-            // 
-            // geneDataTextBox
-            // 
-            this.geneDataTextBox.Location = new System.Drawing.Point(242, 24);
-            this.geneDataTextBox.Name = "geneDataTextBox";
-            this.geneDataTextBox.Size = new System.Drawing.Size(100, 21);
-            this.geneDataTextBox.TabIndex = 17;
+            this.label1.Text = "时间/s";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(402, 563);
-            this.Controls.Add(this.geneDataTextBox);
-            this.Controls.Add(this.generateData);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(355, 335);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox7);
             this.Controls.Add(this.textBox6);
@@ -247,9 +217,6 @@
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button generateData;
-        private System.Windows.Forms.TextBox geneDataTextBox;
     }
 }
 

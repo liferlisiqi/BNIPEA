@@ -16,7 +16,7 @@ namespace BiObjevtiveSystem
         /// <returns></returns>
         public static Solution min1Pareto(ArrayList solutions)
         {
-            Solution pareto = new Solution(1000, 100);
+            Solution pareto = new Solution(1000, 1000);
             foreach (Solution i in solutions)
                 pareto = i.z1 < pareto.z1 ? i : pareto;
             return pareto;
@@ -29,7 +29,7 @@ namespace BiObjevtiveSystem
         /// <returns></returns>
         public static Solution min1Pareto(ArrayList solutions, Solution min1Pareto)
         {
-            Solution Pareto = new Solution(1000, 100);
+            Solution Pareto = new Solution(1000, 1000);
             foreach (Solution i in solutions)
                 if (i.ob2 < min1Pareto.ob2 && i.z1 < Pareto.z1)
                     Pareto = i;
@@ -44,25 +44,41 @@ namespace BiObjevtiveSystem
         /// <returns></returns>
         public static Solution min2Pareto(ArrayList solutions)
         {
-            Solution pareto = new Solution(1000, 100);
+            Solution pareto = new Solution(1000, 1000);
             foreach (Solution i in solutions)
                 pareto = i.z2 < pareto.z2 ? i : pareto;
             return pareto;
         }
 
-        /// <summary>找到距理想点
+        /// <summary>没有理想点，找到理想Pareto
         /// 
         /// </summary>
         /// <param name="solutions"></param>
-        /// <param name="ob1MaxValue"></param>
-        /// <param name="ob2MaxValue"></param>
         /// <returns></returns>
-        public static Solution idealPoint(Solution min1Pareto, Solution min2Pareto)
+        public static Solution idealPareto(ArrayList solutions)
         {
-            return new Solution(min1Pareto.ob1, min2Pareto.ob2);
+            Solution idealPoint = new Solution(1000, 1000);
+            Solution idealPareto = new Solution();
+            double nearDis = double.MaxValue;
+            foreach (Solution i in solutions)
+            {
+                if (idealPoint.ob1 > i.ob1) idealPoint.ob1 = i.ob1;
+                if (idealPoint.ob2 > i.ob2) idealPoint.ob2 = i.ob2;
+            }
+            foreach (Solution i in solutions)
+            {
+                double dis = Math.Pow(idealPoint.ob1 - i.ob1, 2)
+                    + Math.Pow(idealPoint.ob2 - i.ob2, 2);
+                if (dis < nearDis)
+                {
+                    idealPareto = i;
+                    nearDis = dis;
+                }
+            }
+            return idealPareto;
         }
 
-        /// <summary>找到理想Pareto
+        /// <summary>已有理想点,找到理想Pareto
         /// 
         /// </summary>
         /// <param name="solutions"></param>
@@ -83,6 +99,21 @@ namespace BiObjevtiveSystem
                 }
             }
             return idealPareto;
+        }
+
+        /// <summary>寻找不被给定Pareto支配的解
+        /// 
+        /// </summary>
+        /// <param name="solutions"></param>
+        /// <param name="pareto"></param>
+        /// <returns></returns>
+        public static ArrayList ndSolutions(ArrayList solutions, Solution pareto)
+        {
+            ArrayList ndSolutions = new ArrayList();
+            foreach (Solution i in solutions)
+                if (!pareto.dominate(i) && !pareto.equal(i))
+                    ndSolutions.Add(i);
+            return ndSolutions;
         }
     }
 }
