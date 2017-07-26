@@ -62,7 +62,6 @@ namespace BiObjevtiveSystem
             xlApp.Visible = true;
         }
 
-
         private void ExportExcel(ArrayList arl)
         {
             if (arl == null || arl.Count == 0) return;
@@ -129,7 +128,7 @@ namespace BiObjevtiveSystem
             //Schedule msMinPareto = btu.getMsPareto();
             //Schedule ttMinPareto = btu.getTtPareto();
             //ArrayList ndSchedules = btu.getNDSchedules(ttMinPareto.makespan, msMinPareto.timetotal);
-            ArrayList allSchedules = btu.getAllSchedules();          
+            ArrayList allSchedules = btu.getAllSchedules();
             DateTime end = System.DateTime.Now;
             //ExportExcel(allSchedules);
             geneDataTextBox.Text = (end - begin).TotalMilliseconds.ToString();
@@ -149,9 +148,10 @@ namespace BiObjevtiveSystem
         private void ReadData_Click(object sender, EventArgs e)
         {
             DateTime Begin_Time = System.DateTime.Now;
-            SqlConnection conn = new SqlConnection("Data Source=USER-20160720BD;Initial Catalog=MO-benchmark-AP;Integrated Security=True");
+            SqlConnection conn = new SqlConnection("Data Source=USER-20160720BD;" +
+                "Initial Catalog=MNGAPbenchmark;Integrated Security=True");
             System.Data.DataTable AllData = new System.Data.DataTable();
-            string sql = "select sum,cv from [3-8-11]";
+            string sql = "select totaltime,timeCV from [5-15-1]";
             try
             {
                 conn.Open();
@@ -177,7 +177,7 @@ namespace BiObjevtiveSystem
             }
             DateTime End_Time = System.DateTime.Now;
             textBox1.Text = (End_Time - Begin_Time).TotalMilliseconds.ToString();
-            drawPoints(allSolution);
+            //drawPoints(allSolution);
             //NPOIHelper.outputExcel(allSolution, "D:/源码/多目标精确算法/多目标benchmark/AP/3-10-1-all.xls");
             //ExportExcel(AllData);
 
@@ -197,12 +197,12 @@ namespace BiObjevtiveSystem
 
             while (true)
             {
-                ob1MaxPareto = Find.ob1MaxSolution(allSolution, ob1MaxPareto);
+                ob1MaxPareto = Find.min1Pareto(allSolution, ob1MaxPareto);
                 if (ob1MaxPareto.ob2 == 0) break;
                 paretoSet.Add(ob1MaxPareto);
             }
 
-            drawPoints(paretoSet);
+            //drawPoints(paretoSet);
             DateTime endTime = System.DateTime.Now;
             textBox2.Text = (endTime - beginTime).TotalMilliseconds.ToString();
             Console.WriteLine("1: " + paretoSet.Count);
@@ -219,18 +219,18 @@ namespace BiObjevtiveSystem
             ArrayList restSolutionSet = allSolution;
             ArrayList paretoSet = new ArrayList();
 
-            Solution ob1MaxPareto = Find.ob1MaxSolution(restSolutionSet);
+            Solution ob1MaxPareto = Find.min1Pareto(restSolutionSet);
             restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb1MaxPareto(restSolutionSet, ob1MaxPareto);
             paretoSet.Add(ob1MaxPareto);
 
-            Solution ob2MaxPareot = Find.ob2MaxSolution(restSolutionSet);
+            Solution ob2MaxPareot = Find.min2Pareto(restSolutionSet);
             restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb2MaxPareto(restSolutionSet, ob2MaxPareot);
             paretoSet.Add(ob2MaxPareot);
 
             ob1MaxPareto = new Solution();
             while (true)
             {
-                ob1MaxPareto = Find.ob1MaxSolution(restSolutionSet, ob1MaxPareto);
+                ob1MaxPareto = Find.min1Pareto(restSolutionSet, ob1MaxPareto);
                 if (ob1MaxPareto.ob2 == 0) break;
                 paretoSet.Add(ob1MaxPareto);
             }
@@ -254,7 +254,7 @@ namespace BiObjevtiveSystem
 
             while (restSolutionSet.Count != 0)
             {
-                ob1MaxPareto = Find.ob1MaxSolution(restSolutionSet);
+                ob1MaxPareto = Find.min1Pareto(restSolutionSet);
                 restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb1MaxPareto(restSolutionSet, ob1MaxPareto);
                 paretoSet.Add(ob1MaxPareto);
             }
@@ -276,13 +276,13 @@ namespace BiObjevtiveSystem
             Solution ob1MaxPareto = new Solution();
             ArrayList restSolutionSet = allSolution;
 
-            Solution ob2MaxPareto = Find.ob2MaxSolution(restSolutionSet);
+            Solution ob2MaxPareto = Find.min2Pareto(restSolutionSet);
             restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb2MaxPareto(restSolutionSet, ob2MaxPareto);
             paretoSet.Add(ob2MaxPareto);
 
             while (restSolutionSet.Count != 0)
             {
-                ob1MaxPareto = Find.ob1MaxSolution(restSolutionSet);
+                ob1MaxPareto = Find.min1Pareto(restSolutionSet);
                 restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb1MaxPareto(restSolutionSet, ob1MaxPareto);
                 paretoSet.Add(ob1MaxPareto);
             }
@@ -303,13 +303,13 @@ namespace BiObjevtiveSystem
             ArrayList paretoSet = new ArrayList();
             ArrayList restSolutionSet = allSolution;
 
-            Solution nearestPareto = Find.nearestPointToIdealPoint(restSolutionSet);
+            Solution nearestPareto = Find.idealPoint(restSolutionSet);
             paretoSet.Add(restSolutionSet);
             restSolutionSet = BiObjevtiveSystem.Select.nondominatedByNearestPareto(restSolutionSet, nearestPareto);
 
             while (restSolutionSet.Count != 0)
             {
-                Solution ob1MaxPareto = Find.ob1MaxSolution(restSolutionSet);
+                Solution ob1MaxPareto = Find.min1Pareto(restSolutionSet);
                 restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb1MaxPareto(restSolutionSet, ob1MaxPareto);
                 paretoSet.Add(ob1MaxPareto);
             }
@@ -330,29 +330,57 @@ namespace BiObjevtiveSystem
             ArrayList paretoSet = new ArrayList();
             ArrayList restSolutionSet = allSolution;
 
-            Solution ob1MaxPareto = Find.ob1MaxSolution(restSolutionSet);
-            restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb1MaxPareto(restSolutionSet, ob1MaxPareto);
-            paretoSet.Add(ob1MaxPareto);
-
-            Solution ob2MaxPareto = Find.ob2MaxSolution(restSolutionSet);
-            restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb2MaxPareto(restSolutionSet, ob2MaxPareto);
-            paretoSet.Add(ob2MaxPareto);
-
-            Solution nearestPareto = Find.nearestPointToIdealPoint(restSolutionSet);
-            paretoSet.Add(nearestPareto);
-            restSolutionSet = BiObjevtiveSystem.Select.nondominatedByNearestPareto(restSolutionSet, nearestPareto);
-
-            ob1MaxPareto = new Solution();
-            while (restSolutionSet.Count != 0)
-            {
-                ob1MaxPareto = Find.ob1MaxSolution(restSolutionSet);
-                restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb1MaxPareto(restSolutionSet, ob1MaxPareto);
-                paretoSet.Add(ob1MaxPareto);
-            }
-            //NPOIHelper(IdeaSet, "D:/源码/多目标精确算法/多目标benchmark/AP/3-10-1.xls");
+            Parallel.Invoke(() =>
+                {
+                    Find.min1Pareto(restSolutionSet);
+                },
+                () =>
+                {
+                    Find.min2Pareto(restSolutionSet);
+                },
+                () =>
+                {
+                    Find.idealPoint(restSolutionSet);
+                }
+                    );
             DateTime endTime = System.DateTime.Now;
-            textBox7.Text = (endTime - beginTime).TotalMilliseconds.ToString();
-            Console.WriteLine("6: " + paretoSet.Count);
+            Console.WriteLine("并行：" + (endTime - beginTime).TotalMilliseconds.ToString());
+
+
+            DateTime beginTime1 = System.DateTime.Now;
+
+            DateTime beginTime2 = System.DateTime.Now;
+            Solution ob1MaxPareto = Find.min1Pareto(restSolutionSet);
+            DateTime endTime2 = System.DateTime.Now;
+            Console.WriteLine("1："+(endTime2 - beginTime2).TotalMilliseconds.ToString());
+
+            //restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb1MaxPareto(restSolutionSet, ob1MaxPareto);
+            //paretoSet.Add(ob1MaxPareto);
+            DateTime beginTime3 = System.DateTime.Now;
+            Solution ob2MaxPareto = Find.min2Pareto(restSolutionSet);
+            DateTime endTime3 = System.DateTime.Now;
+            Console.WriteLine("2：" + (endTime3 - beginTime3).TotalMilliseconds.ToString());
+            //restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb2MaxPareto(restSolutionSet, ob2MaxPareto);
+            //paretoSet.Add(ob2MaxPareto);
+            DateTime beginTime4 = System.DateTime.Now;
+            Solution nearestPareto = Find.idealPoint(restSolutionSet);
+            DateTime endTime4 = System.DateTime.Now;
+            Console.WriteLine("理：" + (endTime4 - beginTime4).TotalMilliseconds.ToString());
+            //paretoSet.Add(nearestPareto);
+            //restSolutionSet = BiObjevtiveSystem.Select.nondominatedByNearestPareto(restSolutionSet, nearestPareto);
+
+            //ob1MaxPareto = new Solution();
+            //while (restSolutionSet.Count != 0)
+            //{
+            //    ob1MaxPareto = Find.ob1MaxSolution(restSolutionSet);
+            //    restSolutionSet = BiObjevtiveSystem.Select.nondominatedByOb1MaxPareto(restSolutionSet, ob1MaxPareto);
+            //    paretoSet.Add(ob1MaxPareto);
+            //}
+            //NPOIHelper(IdeaSet, "D:/源码/多目标精确算法/多目标benchmark/AP/3-10-1.xls");
+            DateTime endTime1 = System.DateTime.Now;
+            Console.WriteLine("串行：" + (endTime1 - beginTime1).TotalMilliseconds.ToString());
+            //textBox7.Text = (endTime - beginTime).TotalMilliseconds.ToString();
+            //Console.WriteLine("6: " + paretoSet.Count);
         }
 
     }

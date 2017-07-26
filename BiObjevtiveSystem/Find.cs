@@ -9,147 +9,80 @@ namespace BiObjevtiveSystem
 {
     class Find
     {
-        /// <summary>找到ob1最大的解，同时也是一个Pareto最优解
+        /// <summary>找到ob1最小的Pareto最优解
         ///
         /// </summary>
-        /// <param name="solutionSet"></param>
+        /// <param name="solutions"></param>
         /// <returns></returns>
-        public static Solution ob1MaxSolution(ArrayList solutionSet)
+        public static Solution min1Pareto(ArrayList solutions)
         {
-            Solution Pareto = new Solution();
-            ArrayList ob1MaxSolutionSet = new ArrayList();
-
-            foreach (Solution i in solutionSet)
-            {
-                if (Pareto.ob1 < i.ob1)
-                {
-                    Pareto = i;
-                    ob1MaxSolutionSet.Clear();
-                    ob1MaxSolutionSet.Add(Pareto);
-                }
-                if (Pareto.ob1 == i.ob1)
-                {
-                    ob1MaxSolutionSet.Add(i);
-                }
-            }
-            foreach (Solution i in ob1MaxSolutionSet)
-            {
-                if (Pareto.ob2 <= i.ob2)
-                {
-                    Pareto = i;
-                }
-            }
-
-            return Pareto;
+            Solution pareto = new Solution(1000, 100);
+            foreach (Solution i in solutions)
+                pareto = i.z1 < pareto.z1 ? i : pareto;
+            return pareto;
         }
 
-        /// <summary>找到ob1最大的解，同时也是一个Pareto最优解，但该方法只用于原始Epslon约束法
+        /// <summary>找到ob1最小的Pareto最优解，该重载只用于原始Epslon约束法
         /// 
         /// </summary>
-        /// <param name="solutionSet"></param>
+        /// <param name="solutions"></param>
         /// <returns></returns>
-        public static Solution ob1MaxSolution(ArrayList solutionSet, Solution aheadob1MaxPareto)
+        public static Solution min1Pareto(ArrayList solutions, Solution min1Pareto)
         {
-            Solution Pareto = new Solution();
-            ArrayList ob1MaxSolutionSet = new ArrayList();
-
-            foreach (Solution i in solutionSet)
-            {
-                if(aheadob1MaxPareto.ob2 < i.ob2)
-                {
-                    if (Pareto.ob1 < i.ob1)
-                    {
-                        Pareto = i;
-                        ob1MaxSolutionSet.Clear();
-                        ob1MaxSolutionSet.Add(Pareto);
-                    }
-                    if (Pareto.ob1 == i.ob1)
-                    {
-                        ob1MaxSolutionSet.Add(i);
-                    }
-                }
-                
-            }
-            foreach (Solution i in ob1MaxSolutionSet)
-            {
-                if (Pareto.ob2 <= i.ob2)
-                {
+            Solution Pareto = new Solution(1000, 100);
+            foreach (Solution i in solutions)
+                if (i.ob2 < min1Pareto.ob2 && i.z1 < Pareto.z1)
                     Pareto = i;
-                }
-            }
-
             return Pareto;
         }
 
 
-        /// <summary>找到ob2最大的解，同时也是一个Pareto最优解
+        /// <summary>找到ob2最小的Pareto最优解
         /// 
         /// </summary>
-        /// <param name="solutionSet"></param>
+        /// <param name="solutions"></param>
         /// <returns></returns>
-        public static Solution ob2MaxSolution(ArrayList solutionSet)
+        public static Solution min2Pareto(ArrayList solutions)
         {
-            Solution Pareto = new Solution();
-            ArrayList ob2MaxSolutionSet = new ArrayList();
-
-            foreach (Solution i in solutionSet)
-            {
-                if (Pareto.ob2 < i.ob2)
-                {
-                    Pareto = i;
-                    ob2MaxSolutionSet.Clear();
-                    ob2MaxSolutionSet.Add(Pareto);
-                }
-                if (Pareto.ob2 == i.ob2)
-                {
-                    ob2MaxSolutionSet.Add(i);
-                }
-            }
-            foreach (Solution i in ob2MaxSolutionSet)
-            {
-                if (Pareto.ob1 <= i.ob1)
-                {
-                    Pareto = i;
-                }
-            }
-
-            return Pareto;
+            Solution pareto = new Solution(1000, 100);
+            foreach (Solution i in solutions)
+                pareto = i.z2 < pareto.z2 ? i : pareto;
+            return pareto;
         }
 
-        /// <summary>找到距理想点最近的解，同时也是一个Pareto最优解
+        /// <summary>找到距理想点
         /// 
         /// </summary>
-        /// <param name="solutionSet"></param>
+        /// <param name="solutions"></param>
         /// <param name="ob1MaxValue"></param>
         /// <param name="ob2MaxValue"></param>
         /// <returns></returns>
-        public static Solution nearestPointToIdealPoint(ArrayList solutionSet)
+        public static Solution idealPoint(Solution min1Pareto, Solution min2Pareto)
         {
-            Solution nearestPoint = new Solution();
-            double nearestDistance = new double();
-            double ob1MaxValue = 0;
-            double ob2MaxValue = 0;
-
-            foreach (Solution i in solutionSet)
-            {
-                if (ob1MaxValue < i.ob1) ob1MaxValue = i.ob1;
-                if (ob2MaxValue < i.ob2) ob2MaxValue = i.ob2;
-            }
-
-            nearestDistance = double.MaxValue;
-
-            foreach (Solution i in solutionSet)
-            {
-                double distance = (ob1MaxValue - i.ob1) * (ob1MaxValue - i.ob1) + (ob2MaxValue - i.ob2) * (ob2MaxValue - i.ob2);
-                if (distance < nearestDistance)
-                {
-                    nearestDistance = distance;
-                    nearestPoint = i;
-                }
-            }
-            return nearestPoint;
+            return new Solution(min1Pareto.ob1, min2Pareto.ob2);
         }
 
-
+        /// <summary>找到理想Pareto
+        /// 
+        /// </summary>
+        /// <param name="solutions"></param>
+        /// <param name="idealPoint"></param>
+        /// <returns></returns>
+        public static Solution idealPareto(ArrayList solutions, Solution idealPoint)
+        {
+            Solution idealPareto = new Solution();
+            double nearDis = double.MaxValue;
+            foreach (Solution i in solutions)
+            {
+                double dis = Math.Pow(idealPoint.ob1 - i.ob1, 2)
+                    + Math.Pow(idealPoint.ob2 - i.ob2, 2);
+                if (dis < nearDis)
+                {
+                    idealPareto = i;
+                    nearDis = dis;
+                }
+            }
+            return idealPareto;
+        }
     }
 }

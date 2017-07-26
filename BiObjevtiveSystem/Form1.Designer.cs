@@ -178,9 +178,9 @@
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(430, 24);
+            this.panel1.Location = new System.Drawing.Point(66, 358);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(505, 505);
+            this.panel1.Size = new System.Drawing.Size(196, 126);
             this.panel1.TabIndex = 15;
             // 
             // generateData
@@ -204,7 +204,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(987, 563);
+            this.ClientSize = new System.Drawing.Size(402, 563);
             this.Controls.Add(this.geneDataTextBox);
             this.Controls.Add(this.generateData);
             this.Controls.Add(this.panel1);
