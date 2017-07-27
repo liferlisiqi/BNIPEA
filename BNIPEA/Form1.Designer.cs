@@ -1,4 +1,4 @@
-﻿namespace BiObjevtiveSystem
+﻿namespace BNIPEA
 {
     partial class Form1
     {

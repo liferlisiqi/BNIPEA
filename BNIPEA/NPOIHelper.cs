@@ -8,7 +8,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System.IO;
 
-namespace BiObjevtiveSystem
+namespace BNIPEA
 {
     class NPOIHelper
     {

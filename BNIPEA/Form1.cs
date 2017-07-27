@@ -14,7 +14,7 @@ using System.Collections;
 using Microsoft.Office.Interop.Excel;
 using System.Data;
 
-namespace BiObjevtiveSystem
+namespace BNIPEA
 {
     public partial class Form1 : Form
     {
@@ -36,7 +36,7 @@ namespace BiObjevtiveSystem
             SqlConnection conn = new SqlConnection("Data Source=USER-20160720BD;" +
                 "Initial Catalog=MNGAPbenchmark;Integrated Security=True");
             System.Data.DataTable AllData = new System.Data.DataTable();
-            string sql = "select totaltime,timeCV from [5-15-1]";
+            string sql = "select totaltime,timeCV from [5-17-1]";
             try
             {
                 conn.Open();
