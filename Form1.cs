@@ -1,17 +1,13 @@
-﻿//本系统用于求解双目标非线性整数规划问题的所有Pareto最优解，两个目标均为求min
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Collections;
-using Microsoft.Office.Interop.Excel;
 using System.Data;
 
 namespace BNIPEA
@@ -24,25 +20,16 @@ namespace BNIPEA
             InitializeComponent();
         }
 
-
-        /// <summary>读数据
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ReadData_Click(object sender, EventArgs e)
+        private void readSubData(String tablename, int lo, int hi)
         {
-            DateTime Begin_Time = System.DateTime.Now;
-            SqlConnection conn = new SqlConnection("Data Source=USER-20160720BD;" +
-                "Initial Catalog=MNGAPbenchmark;Integrated Security=True");
-            System.Data.DataTable AllData = new System.Data.DataTable();
-            string sql = "select totaltime,timeCV from [5-17-1]";
+            SqlConnection conn = new SqlConnection("Data Source=703B\\SQL2005;Initial Catalog=MNGAP;Integrated Security=True");
+            DataTable dt = new DataTable();
+            string sql = "select totaltime,timeCV from " + tablename + " where ID > " + lo + " and ID <= " + hi;
             try
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                sda.Fill(AllData);
+                SqlDataAdapter sda = new SqlDataAdapter(new SqlCommand(sql, conn));
+                sda.Fill(dt);
             }
             catch (Exception ex)
             {
@@ -53,28 +40,33 @@ namespace BNIPEA
                 conn.Close();
                 conn.Dispose();
             }
-            for (int j = 0; j < AllData.Rows.Count; j++)
+
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
                 Solution solution = new Solution(
-                    Convert.ToDouble(AllData.Rows[j][0].ToString()), 
-                    Convert.ToDouble(AllData.Rows[j][1].ToString()));
+                   Math.Floor(Convert.ToDouble(dt.Rows[i][0].ToString()) * 10000) / 10000,
+                   Math.Floor(Convert.ToDouble(dt.Rows[i][1].ToString()) * 10000) / 10000);
                 allSolutions.Add(solution);
             }
-            DateTime End_Time = System.DateTime.Now;
-            textBox1.Text = (End_Time - Begin_Time).TotalSeconds.ToString();
-            //NPOIHelper.outputExcel(allSolution, "D:/源码/多目标精确算法/多目标benchmark/AP/3-10-1-all.xls");
         }
 
-        /// <summary>原始Epslon约束法
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void epslon_Click(object sender, EventArgs e)
+        private void read_BTN_Click(object sender, EventArgs e)
+        {
+            allSolutions.Clear();
+            string M = M_ComBox.Text;
+            string N = N_ComBox.Text;
+            string ins = ins_ComBox.Text;
+            readSubData("[" + M + "-" + N + "-" + ins + "]", 0, 10000000);
+            //readSubData("[5-18-5]", 5000000, 10000000);
+            //readSubData(10000000, 15000000);
+            this.N_Text.Text = allSolutions.Count.ToString();
+        }
+
+        private void E_Click(object sender, EventArgs e)
         {
             DateTime beginTime = System.DateTime.Now;
             ArrayList ParetoSet = new ArrayList();
-            Solution min1Pareto = new Solution(1000,1000);
+            Solution min1Pareto = new Solution(1000, 1000);
 
             while (true)
             {
@@ -84,15 +76,95 @@ namespace BNIPEA
             }
 
             DateTime endTime = System.DateTime.Now;
-            textBox2.Text = (endTime - beginTime).TotalSeconds.ToString();
-            Console.WriteLine("epslon: " + ParetoSet.Count);
+            E_T_Text.Text = (endTime - beginTime).TotalSeconds.ToString();
+            E_P_Text.Text = ParetoSet.Count.ToString();
         }
 
-        /// <summary>eplson剪切
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        private void PC_Click(object sender, EventArgs e)
+        {
+            DateTime beginTime = System.DateTime.Now;
+            ArrayList restSolutions = allSolutions;
+            ArrayList ParetoSet = new ArrayList();
+
+            Solution min1Pareto = Find.min1Pareto(restSolutions);
+            restSolutions = Find.ndSolutions(restSolutions, min1Pareto);
+            ParetoSet.Add(min1Pareto);
+
+            Solution min2Pareto = Find.min2Pareto(restSolutions);
+            restSolutions = Find.ndSolutions(restSolutions, min2Pareto);
+            ParetoSet.Add(min2Pareto);
+
+            PC_LS_Text.Text = restSolutions.Count.ToString();
+
+            Solution Pareto = new Solution(1000, 1000);
+            while (true)
+            {
+                Pareto = Find.min1Pareto(restSolutions, Pareto);
+                if (Pareto.ob2 == 1000) break;
+                ParetoSet.Add(Pareto);
+            }
+
+            DateTime endTime = System.DateTime.Now;
+            PC_T_Text.Text = (endTime - beginTime).TotalSeconds.ToString();
+            PC_P_Text.Text = ParetoSet.Count.ToString();
+        }
+
+        private void IC_Click(object sender, EventArgs e)
+        {
+            DateTime beginTime = System.DateTime.Now;
+            ArrayList ParetoSet = new ArrayList();
+            ArrayList restSolutions = allSolutions;
+
+            Solution nearestPareto = Find.idealPareto(restSolutions);
+            ParetoSet.Add(restSolutions);
+            restSolutions = Find.ndSolutions(restSolutions, nearestPareto);
+            IC_LS_Text.Text = restSolutions.Count.ToString();
+
+            Solution min1Pareto = new Solution(1000, 1000);
+            while (true)
+            {
+                min1Pareto = Find.min1Pareto(restSolutions, min1Pareto);
+                if (min1Pareto.ob2 == 1000) break;
+                ParetoSet.Add(min1Pareto);
+            }
+
+            DateTime endTime = System.DateTime.Now;
+            IC_T_Text.Text = (endTime - beginTime).TotalSeconds.ToString() + "";
+            IC_P_Text.Text = ParetoSet.Count + "";
+        }
+
+        private void PIC_Click(object sender, EventArgs e)
+        {
+            DateTime beginTime = System.DateTime.Now;
+            ArrayList ParetoSet = new ArrayList();
+            ArrayList restSolutions = allSolutions;
+
+            Solution min1Pareto = Find.min1Pareto(restSolutions);
+            restSolutions = Find.ndSolutions(restSolutions, min1Pareto);
+            ParetoSet.Add(min1Pareto);
+
+            Solution min2Pareto = Find.min2Pareto(restSolutions);
+            restSolutions = Find.ndSolutions(restSolutions, min2Pareto);
+            ParetoSet.Add(min2Pareto);
+
+            Solution nearestPareto = Find.idealPareto(restSolutions);
+            ParetoSet.Add(restSolutions);
+            restSolutions = Find.ndSolutions(restSolutions, nearestPareto);
+            PIC_LS_Text.Text = restSolutions.Count.ToString();
+
+            min1Pareto = new Solution(1000, 1000);
+            while (true)
+            {
+                min1Pareto = Find.min1Pareto(restSolutions, min1Pareto);
+                if (min1Pareto.ob2 == 1000) break;
+                ParetoSet.Add(min1Pareto);
+            }
+
+            DateTime endTime = System.DateTime.Now;
+            PIC_T_Text.Text = (endTime - beginTime).TotalSeconds.ToString() + "";
+            PIC_P_Text.Text = ParetoSet.Count + "";    
+        }
+
         private void EC_Click(object sender, EventArgs e)
         {
             DateTime beginTime = System.DateTime.Now;
@@ -108,20 +180,15 @@ namespace BNIPEA
             }
 
             DateTime endTime = System.DateTime.Now;
-            textBox4.Text = (endTime - beginTime).TotalSeconds.ToString();
-            Console.WriteLine("EC: " + ParetoSet.Count);
+            EC_T_Text.Text = (endTime - beginTime).TotalSeconds.ToString();
+            EC_P_Text.Text = ParetoSet.Count + "";
         }
 
-        /// <summary>两极点Pareto剪切，原始Eplson约束法
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PC_Click(object sender, EventArgs e)
+        private void PEC_Click(object sender, EventArgs e)
         {
             DateTime beginTime = System.DateTime.Now;
-            ArrayList restSolutions = allSolutions;
             ArrayList ParetoSet = new ArrayList();
+            ArrayList restSolutions = allSolutions;
 
             Solution min1Pareto = Find.min1Pareto(restSolutions);
             restSolutions = Find.ndSolutions(restSolutions, min1Pareto);
@@ -130,36 +197,9 @@ namespace BNIPEA
             Solution min2Pareto = Find.min2Pareto(restSolutions);
             restSolutions = Find.ndSolutions(restSolutions, min2Pareto);
             ParetoSet.Add(min2Pareto);
+            PEC_LS_Text.Text = restSolutions.Count.ToString();
 
-            min1Pareto = new Solution(1000, 1000);
-            while (true)
-            {
-                min1Pareto = Find.min1Pareto(restSolutions, min1Pareto);
-                if (min1Pareto.ob2 == 1000) break;
-                ParetoSet.Add(min1Pareto);
-            }
-
-            DateTime endTime = System.DateTime.Now;
-            textBox3.Text = (endTime - beginTime).TotalSeconds.ToString();
-            Console.WriteLine("PC: " + ParetoSet.Count);
-        }   
-
-        /// <summary>两极点Pareto剪切，eplson剪切
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PEC_Click(object sender, EventArgs e)
-        {
-            DateTime beginTime = System.DateTime.Now;
-            ArrayList ParetoSet = new ArrayList();
-            Solution min1Pareto = new Solution(1000,100);
-            ArrayList restSolutions = allSolutions;
-
-            Solution min2Pareto = Find.min2Pareto(restSolutions);
-            restSolutions = Find.ndSolutions(restSolutions, min2Pareto);
-            ParetoSet.Add(min2Pareto);
-
+            min1Pareto = new Solution();
             while (restSolutions.Count != 0)
             {
                 min1Pareto = Find.min1Pareto(restSolutions);
@@ -168,15 +208,10 @@ namespace BNIPEA
             }
 
             DateTime endTime = System.DateTime.Now;
-            textBox5.Text = (endTime - beginTime).TotalSeconds.ToString();
-            Console.WriteLine("PEC: " + ParetoSet.Count);
+            PEC_T_Text.Text = (endTime - beginTime).TotalSeconds.ToString();
+            PEC_P_Text.Text = ParetoSet.Count.ToString();
         }
 
-        /// <summary>理想Pareto剪切，eplson剪切
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void IEC_Click(object sender, EventArgs e)
         {
             DateTime beginTime = System.DateTime.Now;
@@ -186,6 +221,7 @@ namespace BNIPEA
             Solution nearestPareto = Find.idealPareto(restSolutions);
             ParetoSet.Add(restSolutions);
             restSolutions = Find.ndSolutions(restSolutions, nearestPareto);
+            IEC_LS_Text.Text = restSolutions.Count.ToString();
 
             while (restSolutions.Count != 0)
             {
@@ -193,17 +229,12 @@ namespace BNIPEA
                 restSolutions = Find.ndSolutions(restSolutions, ob1MaxPareto);
                 ParetoSet.Add(ob1MaxPareto);
             }
-            //NPOIHelper(IdeaSet, "D:/源码/多目标精确算法/多目标benchmark/AP/3-10-1.xls");
+
             DateTime endTime = System.DateTime.Now;
-            textBox6.Text = (endTime - beginTime).TotalSeconds.ToString();
-            Console.WriteLine("IEC: " + ParetoSet.Count);
+            IEC_T_Text.Text = (endTime - beginTime).TotalSeconds.ToString();
+            IEC_P_Text.Text = ParetoSet.Count.ToString();
         }
 
-        /// <summary>两极点Pareto剪切，理想Pareto剪切，eplson剪切
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void PIEC_Click(object sender, EventArgs e)
         {
             DateTime beginTime = System.DateTime.Now;
@@ -224,7 +255,7 @@ namespace BNIPEA
             //        Find.idealPareto(restSolutions);
             //    }
             //        );
-            
+
 
             Solution min1Pareto = Find.min1Pareto(restSolutions);
             restSolutions = Find.ndSolutions(restSolutions, min1Pareto);
@@ -235,6 +266,7 @@ namespace BNIPEA
             Solution idealPareto = Find.idealPareto(restSolutions);
             ParetoSet.Add(idealPareto);
             restSolutions = Find.ndSolutions(restSolutions, idealPareto);
+            PIEC_LS_Text.Text = restSolutions.Count.ToString();
 
             min1Pareto = new Solution();
             while (restSolutions.Count != 0)
@@ -244,10 +276,8 @@ namespace BNIPEA
                 ParetoSet.Add(min1Pareto);
             }
             DateTime endTime = System.DateTime.Now;
-            //NPOIHelper(IdeaSet, "D:/源码/多目标精确算法/多目标benchmark/AP/3-10-1.xls");
-            textBox7.Text = (endTime - beginTime).TotalSeconds.ToString();
-            Console.WriteLine("PIEC: " + ParetoSet.Count);
+            PIEC_T_Text.Text = (endTime - beginTime).TotalSeconds.ToString();
+            PIEC_P_Text.Text = ParetoSet.Count.ToString();
         }
-
     }
 }

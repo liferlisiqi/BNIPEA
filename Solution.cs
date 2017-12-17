@@ -29,8 +29,8 @@ namespace BNIPEA
         {
             this.ob1 = ob1;
             this.ob2 = ob2;
-            this.z1 = ob1 + 0.0000001 * ob2;
-            this.z2 = ob2 + 0.0000001 * ob1;
+            this.z1 = ob1 + 0.000000001 * ob2;
+            this.z2 = ob2 + 0.000000001 * ob1;
             this.sum = ob1 + ob2;
         }
 
